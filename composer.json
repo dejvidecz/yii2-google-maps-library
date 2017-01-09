@@ -1,6 +1,6 @@
 {
     "name": "dejvidecz/yii2-google-maps-library",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "description": "Extension google maps for 2amigos google map for yii2",
     "keywords": ["google-maps", "yii2"],
     "type": "yii2-extension",
