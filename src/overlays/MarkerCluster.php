@@ -80,8 +80,11 @@ class MarkerCluster extends ObjectAbstract
             $js[] = $marker->getJs();
         }
 
+        $js[] = "var options = {
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        };";
 
-        $js[] = "var {$this->getName()} = new MarkerClusterer({$this->map},markers);";
+        $js[] = "var {$this->getName()} = new MarkerClusterer({$this->map},markers,options);";
 
 
         return implode("\n", $js);
