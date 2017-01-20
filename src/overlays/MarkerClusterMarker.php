@@ -90,6 +90,16 @@ class MarkerClusterMarker extends MarkerOptions
             /** @var \dosamigos\google\maps\Event $event */
             $js[] = $event->getJs($this->getName());
         }
+
+        $js[] = "
+        try {
+            globalMarkers['{$this->getName()}'] = {$this->getName()};
+        }
+        catch(err) {
+            
+        }
+        
+        ";
         $js[] = "markers.push({$this->getName()})";
 
         return implode("\n", $js);
