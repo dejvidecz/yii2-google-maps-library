@@ -81,6 +81,7 @@ class MarkerCluster extends ObjectAbstract
         }
 
         $js[] = "var options = {
+            gridSize: 10,
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         };";
 
