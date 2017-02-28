@@ -7,13 +7,9 @@
 namespace dejvidecz\google\maps\overlays;
 
 use dosamigos\google\maps\LatLng;
-use dosamigos\google\maps\LatLngBounds;
 use dosamigos\google\maps\ObjectAbstract;
-use dosamigos\google\maps\overlays\Marker;
 use dosamigos\google\maps\OverlayTrait;
 use dosamigos\google\maps\Point;
-use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -57,7 +53,31 @@ class MarkerCluster extends ObjectAbstract
     /**
      * @var MarkerClusterMarker[]
      */
-    public $markers=[];
+    public $markers = [];
+
+    /**
+     * @inheritdoc
+     *
+     * @param array $config
+     */
+    public function __construct($config = [])
+    {
+
+        $this->options = ArrayHelper::merge(
+            [
+                'gridSize' => 20,
+                'maxZoom' => null,
+                'zoomOnClick' => null,
+                'averageCenter' => null,
+                'minimumClusterSize' => null,
+                'styles' => null,
+                'imagePath' => "'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'",
+            ],
+            $this->options
+        );
+
+        parent::__construct($config);
+    }
 
     /**
      * @inheritdoc
@@ -74,17 +94,37 @@ class MarkerCluster extends ObjectAbstract
     public function getJs()
     {
 
+
         $js[] = "var markers = []";
 
         foreach ($this->markers as $marker) {
             $js[] = $marker->getJs();
         }
+        $opts = "var options = {";
+        if ($this->options['gridSize'] != null) {
+            $opts .= "gridSize:{$this->options['gridSize']},";
+        }
+        if ($this->options['maxZoom'] != null) {
+            $opts .= "maxZoom:{$this->options['maxZoom']},";
+        }
+        if ($this->options['zoomOnClick'] != null) {
+            $opts .= "zoomOnClick:{$this->options['zoomOnClick']},";
+        }
+        if ($this->options['averageCenter'] != null) {
+            $opts .= "averageCenter:{$this->options['averageCenter']},";
+        }
+        if ($this->options['minimumClusterSize'] != null) {
+            $opts .= "minimumClusterSize:{$this->options['minimumClusterSize']},";
+        }
+        if ($this->options['styles'] != null) {
+            $opts .= "styles:{$this->options['styles']},";
+        }
+        if ($this->options['imagePath'] != null) {
+            $opts .= "imagePath:{$this->options['imagePath']},";
+        }
 
-        $js[] = "var options = {
-            gridSize: 10,
-            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-        };";
-
+        $opts .= "};";
+        $js[] = $opts;
         $js[] = "var {$this->getName()} = new MarkerClusterer({$this->map},markers,options);";
 
 
